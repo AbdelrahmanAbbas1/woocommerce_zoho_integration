@@ -1,0 +1,27 @@
+[
+  {
+    "id": 88,
+    "billing": {
+      "first_name": "Alice",
+      "last_name": "Smith",
+      "email": "alice@example.com"
+    },
+    "line_items": [
+      { "name": "Product A" },
+      { "name": "Product B" }
+    ],
+    "total": "49.99"
+  },
+  {
+    "id": 89,
+    "billing": {
+      "first_name": "Bob",
+      "last_name": "Jones",
+      "email": "bob@example.com"
+    },
+    "line_items": [
+      { "name": "Product C" }
+    ],
+    "total": "19.99"
+  }
+]

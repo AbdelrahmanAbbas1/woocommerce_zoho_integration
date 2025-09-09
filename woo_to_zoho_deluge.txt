@@ -1,0 +1,94 @@
+string standalone.wooToZohoIntegration()
+{
+    // 🔹 WooCommerce API URL via ngrok (Update the url everytime the ngrok starts)
+    wooURL = "https://43b18a191c59.ngrok-free.app/wp-json/wc/v3/orders?consumer_key=ck_3c362e9e0b0f6130e58f355359b4046b2ecd7abe&consumer_secret=cs_9c20dae927577ab87f529b2951e781fd67d938e4";
+
+    // 🔹 Fetch orders from WooCommerce
+    response = invokeurl
+    [
+        url : wooURL
+        type : GET
+    ];
+
+    info "Raw response:";
+    info response;
+
+    // 🔹 Parse response into List
+    orders = response.toJSONList();
+    info "Parsed Orders:";
+    info orders;
+
+    // 🔹 Process each order
+    for each order in orders
+    {
+        firstName = order.get("billing").get("first_name");
+        lastName  = order.get("billing").get("last_name");
+        email     = order.get("billing").get("email");
+        total     = order.get("total");
+        orderId   = order.get("id");
+        products  = "";
+
+        for each item in order.get("line_items")
+        {
+            products = products + item.get("name") + ", ";
+        }
+
+        // ========== CONTACT CREATION ==========
+        contactId = null;
+        if(email != null && email != "")
+        {
+            // Check if contact already exists by email
+            contactSearch = zoho.crm.searchRecords("Contacts", "(Email:equals:" + email + ")");
+            if(contactSearch.isEmpty() == false)
+            {
+                contactId = contactSearch.get(0).get("id");
+                info "Contact already exists for " + email + " : " + contactId;
+            }
+        }
+
+        if(contactId == null)
+        {
+            // Create new contact
+            contactMap = map();
+            contactMap.put("First_Name", firstName);
+            contactMap.put("Last_Name", lastName);
+            contactMap.put("Email", email);
+
+            contactResp = zoho.crm.createRecord("Contacts", contactMap);
+            info "Contact Created:";
+            info contactResp;
+
+            if(contactResp.get("data") != null && contactResp.get("data").get(0).get("details").get("id") != null)
+            {
+                contactId = contactResp.get("data").get(0).get("details").get("id");
+            }
+        }
+
+        // ========== DEAL CREATION ==========
+        dealName = "Order #" + orderId + " - " + products;
+
+        // Check if deal with this name already exists
+        dealSearch = zoho.crm.searchRecords("Deals", "(Deal_Name:equals:" + dealName + ")");
+        if(dealSearch.isEmpty() == false)
+        {
+            info "Deal already exists for order " + orderId;
+        }
+        else
+        {
+            dealMap = map();
+            dealMap.put("Deal_Name", dealName);
+            dealMap.put("Amount", total);
+            dealMap.put("Stage", "Qualification");
+            if(contactId != null)
+            {
+                dealMap.put("Contact_Name", contactId);
+            }
+
+            dealResp = zoho.crm.createRecord("Deals", dealMap);
+            info "Deal Created:";
+            info dealResp;
+        }
+    }
+
+    return "Integration completed with duplicate-checking.";
+}

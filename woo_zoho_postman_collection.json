@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "53f59345-d600-47a0-ba04-a5504243b6d4",
+		"name": "woo_zoho",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40714754",
+		"_collection_link": "https://e-commerce-9009.postman.co/workspace/WooCommerce~0099a4ee-93b2-42b0-8a49-c00f3b30954c/collection/40714754-53f59345-d600-47a0-ba04-a5504243b6d4?action=share&source=collection_link&creator=40714754"
+	},
+	"item": [
+		{
+			"name": "GET WooCommerce Orders",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://36880fa2b806.ngrok-free.app/wp-json/wc/v3/orders?consumer_key={{ck}}&consumer_secret={{cs}}",
+					"protocol": "https",
+					"host": [
+						"36880fa2b806",
+						"ngrok-free",
+						"app"
+					],
+					"path": [
+						"wp-json",
+						"wc",
+						"v3",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "consumer_key",
+							"value": "{{ck}}"
+						},
+						{
+							"key": "consumer_secret",
+							"value": "{{cs}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create Zoho Contace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Zoho-oauthtoken {{acc_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": [\r\n    {\r\n      \"Last_Name\": \"Doe\",\r\n      \"First_Name\": \"John\",\r\n      \"Email\": \"john@example.com\"\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.zohoapis.com/crm/v8/Contacts",
+					"protocol": "https",
+					"host": [
+						"www",
+						"zohoapis",
+						"com"
+					],
+					"path": [
+						"crm",
+						"v8",
+						"Contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create Zoho Deal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Zoho-oauthtoken {{acc_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": [\r\n    {\r\n      \"Deal_Name\": \"Order #102\",\r\n      \"Amount_Name\": \"19.99\",\r\n      \"Stage\": \"Qualification\"\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.zohoapis.com/crm/v8/Deals",
+					"protocol": "https",
+					"host": [
+						"www",
+						"zohoapis",
+						"com"
+					],
+					"path": [
+						"crm",
+						"v8",
+						"Deals"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
