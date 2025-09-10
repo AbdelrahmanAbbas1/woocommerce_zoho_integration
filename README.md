@@ -102,14 +102,6 @@ See [`sample_orders.json`](sample_orders.json) for example WooCommerce orders us
 
 ---
 
-## Notes
-
-- Do **not** commit your `.env` file or any secrets.
-- All tools used are free and run locally.
-- For troubleshooting, check console output and Zoho CRM logs.
-
----
-
 ## Using ngrok for Deluge Integration
 
 When running WooCommerce locally, you need to expose your local site to the internet so Zoho CRM (Deluge) can access it. This is done using [ngrok](https://ngrok.com/).
